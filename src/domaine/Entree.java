@@ -38,6 +38,6 @@ public class Entree {
 
 	@Override
 	public String toString() {
-		return "Entree [id=" + id + ", nom=" + nom + ", prenom=" + prenom + "]";
+		return nom;
 	}
 }
