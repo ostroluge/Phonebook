@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import domaine.Entree;
 import fabrique.FabEntree;
@@ -33,6 +35,16 @@ public class EntreeListPanel extends AbstractJListPanel {
 		mJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		mJList.setLayoutOrientation(JList.VERTICAL);
 		mJList.setVisibleRowCount(-1);
+		
+		ListSelectionModel lsm = mJList.getSelectionModel();
+		lsm.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				System.out.println("Un event list s'est produit");
+				System.out.println(e.getFirstIndex());
+			}
+		});
 		
 		listScroller = new JScrollPane(mJList);
 		listScroller.setPreferredSize(new Dimension(320,200));

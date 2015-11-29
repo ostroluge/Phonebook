@@ -77,7 +77,7 @@ public class FabEntree {
 		return null;
 	}
 	
-	public void addEntree(String nom, String prenom) {
+	public int addEntree(String nom, String prenom) {
 		PreparedStatement preparedStatement;
 		try {
 			preparedStatement = conn.prepareStatement(
@@ -87,10 +87,11 @@ public class FabEntree {
 			preparedStatement.setString(1, nom);
 			preparedStatement.setString(2, prenom);
 			
-			preparedStatement.executeUpdate();
+			return preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return 0;
 	}
 	
 	public void deleteEntree(String nom) {
