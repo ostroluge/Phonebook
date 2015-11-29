@@ -38,6 +38,6 @@ public class Entree {
 
 	@Override
 	public String toString() {
-		return nom;
+		return nom + " " + prenom;
 	}
 }

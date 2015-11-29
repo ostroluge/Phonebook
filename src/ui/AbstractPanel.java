@@ -21,9 +21,6 @@ import domaine.Entree;
 
 public abstract class AbstractPanel extends JPanel implements ActionListener {
 
-	protected JList mJList;
-	protected JScrollPane listScroller;
-	
 	protected JLabel firstLabel;
 	protected JLabel secondLabel;
 	
@@ -38,14 +35,14 @@ public abstract class AbstractPanel extends JPanel implements ActionListener {
 	public AbstractPanel() {
 		setJButtons();
 		setTextFields();
-//		setLayout(new GridBagLayout());
+		setLayout(new GridBagLayout());
 		
-//		add(firstTextField, getFirstTextFieldConstraints());
-//		add(secondTextField, getSecondTextFieldConstraints());
-//		
-//		add(addButton, getAddButtonConstraints());
-//		add(deleteButton, getDeleteButtonConstraints());
-//		add(clearButton, getClearButtonConstraints());
+		add(firstTextField, getFirstTextFieldConstraints());
+		add(secondTextField, getSecondTextFieldConstraints());
+		
+		add(addButton, getAddButtonConstraints());
+		add(deleteButton, getDeleteButtonConstraints());
+		add(clearButton, getClearButtonConstraints());
 	}
 	
 	protected void setJButtons() {
@@ -61,8 +58,6 @@ public abstract class AbstractPanel extends JPanel implements ActionListener {
 	protected abstract void setFirstLabel();
 	
 	protected abstract void setSecondLabel();
-	
-	protected abstract void setJList();
 	
 	protected void setFirstTextField() {
 		Document modelFirstTF = new PlainDocument();

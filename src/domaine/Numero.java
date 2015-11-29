@@ -38,7 +38,6 @@ public class Numero {
 
 	@Override
 	public String toString() {
-		return "Numero [code=" + code + ", valeur=" + valeur + ", idEntree="
-				+ idEntree + "]";
+		return code + " : " + valeur;
 	}
 }

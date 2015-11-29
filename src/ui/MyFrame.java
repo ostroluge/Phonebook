@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 public class MyFrame extends JFrame {
 
 	JPanel container = new JPanel();
+	EntreeListPanel entreeListPanel = new EntreeListPanel();
+	NumeroListPanel numeroListPanel = new NumeroListPanel();
 	EntreePanel entreePanel = new EntreePanel();
 	NumeroPanel numeroPanel = new NumeroPanel();
 	
@@ -25,6 +27,8 @@ public class MyFrame extends JFrame {
 
 	public void initContainer() {
 		this.container.setLayout(new GridLayout(2,2));
+		this.container.add(entreeListPanel);
+		this.container.add(numeroListPanel);
 		this.container.add(entreePanel);
 		this.container.add(numeroPanel);
 	}

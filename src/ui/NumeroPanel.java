@@ -7,42 +7,35 @@ import javax.swing.JLabel;
 public class NumeroPanel extends AbstractPanel {
 
 	public NumeroPanel() {
-		setLabels();
+		setFirstLabel();
+		setSecondLabel();
 		
-		add(super.firstLabel, getFirstLabelConstraints());
-		add(super.secondLabel, getSecondLabelConstraints());
+		add(firstLabel, getFirstLabelConstraints());
+		add(secondLabel, getSecondLabelConstraints());
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println("Un event s'est produit");
 		if (e.getSource() == addButton) {
-			System.out.println("add button pressed");
+			System.out.println("Ajout d'un numero");
 		} else if (e.getSource() == deleteButton) {
-			System.out.println("delete button pressed");
+			System.out.println("Suppression d'un numero");
 		} else if (e.getSource() == clearButton) {
-			System.out.println("clear button pressed");
+			System.out.println("Clear d'un numero");
 		}
 	}
 
 	@Override
 	protected void setFirstLabel() {
-		super.firstLabel = new JLabel();
-		super.firstLabel.setText("Code :");
+		firstLabel = new JLabel();
+		firstLabel.setText("Code :");
 	}
 
 	@Override
 	protected void setSecondLabel() {
-		super.secondLabel = new JLabel();
-		super.secondLabel.setText("Valeur :");
+		secondLabel = new JLabel();
+		secondLabel.setText("Valeur :");
 	}
 
-	private void setLabels() {
-		setFirstLabel();
-		setSecondLabel();
-	}
-
-	@Override
-	protected void setJList() {
-		
-	}
 }
