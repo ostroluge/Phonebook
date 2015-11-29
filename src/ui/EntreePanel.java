@@ -23,7 +23,10 @@ public class EntreePanel extends AbstractPanel {
 			System.out.println("Ajout d'une entree");
 			if (!firstTextField.getText().trim().equals("") 
 					&& !secondTextField.getText().trim().equals("")) {
-				int result = FabEntree.getInstance().addEntree(firstTextField.getText(), secondTextField.getText());
+				int result = 
+						FabEntree.getInstance().addEntree(
+								firstTextField.getText().trim(),
+								secondTextField.getText().trim());
 				if (result == 1) {
 					System.out.println("Succes");
 				} else {

@@ -42,7 +42,7 @@ public class EntreeListPanel extends AbstractJListPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				System.out.println("Un event list s'est produit");
-				System.out.println(e.getFirstIndex());
+				System.out.println(mJList.getSelectedValue().toString());
 			}
 		});
 		
