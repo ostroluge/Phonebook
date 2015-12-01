@@ -1,4 +1,4 @@
-package ui;
+package ui.panel;
 
 import java.awt.event.ActionEvent;
 

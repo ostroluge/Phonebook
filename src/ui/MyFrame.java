@@ -5,6 +5,12 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ui.listPanel.EntreeListPanel;
+import ui.listPanel.NumeroListPanel;
+import ui.panel.EntreePanel;
+import ui.panel.NumeroPanel;
+
+@SuppressWarnings("serial")
 public class MyFrame extends JFrame {
 
 	JPanel container = new JPanel();

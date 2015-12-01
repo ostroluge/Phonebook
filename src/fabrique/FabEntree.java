@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ui.listener.EntreeChangeListener;
 import db.DbManager;
 import domaine.Entree;
 
@@ -15,6 +16,7 @@ public class FabEntree {
 	private static FabEntree INSTANCE;
 	private List<Entree> entrees = new ArrayList<>();
 	private Connection conn = DbManager.getInstance().getConnection();
+	private static List<EntreeChangeListener> listeners = new ArrayList<>();
 	
 	public static FabEntree getInstance() {
 		if (INSTANCE == null) {
@@ -23,7 +25,18 @@ public class FabEntree {
 		return INSTANCE;
 	}
 
+	public void addListener(EntreeChangeListener listener) {
+		listeners.add(listener);
+	}
+	
+	private static void fireModelChangeEvent() {
+		for (EntreeChangeListener listener : listeners) {
+			listener.entreeHasChanged();
+		}
+	}
+	
 	public List<Entree> getAllEntrees() {
+		this.entrees.clear();
 		PreparedStatement preparedStatement;
 		try {
 			preparedStatement = conn.prepareStatement(
@@ -38,6 +51,7 @@ public class FabEntree {
 				String prenom = resultPreparedStatement.getString(3);
 				this.entrees.add(new Entree(id, nom, prenom));
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -87,14 +101,18 @@ public class FabEntree {
 			preparedStatement.setString(1, nom);
 			preparedStatement.setString(2, prenom);
 			
-			return preparedStatement.executeUpdate();
+			int resultCode = preparedStatement.executeUpdate();
+			
+			fireModelChangeEvent();
+			
+			return resultCode;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return 0;
 	}
 	
-	public void deleteEntree(String nom) {
+	public int deleteEntree(String nom) {
 		PreparedStatement preparedStatement;
 		try {
 			preparedStatement = conn.prepareStatement(
@@ -103,9 +121,32 @@ public class FabEntree {
 			
 			preparedStatement.setString(1, nom);
 			
-			preparedStatement.executeUpdate();
+			int resultCode = preparedStatement.executeUpdate();
+			
+			fireModelChangeEvent();
+			
+			return resultCode;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return 0;
+	}
+	
+	public int deleteAllEntrees() {
+		PreparedStatement preparedStatement;
+		try {
+			preparedStatement = conn.prepareStatement(
+					"delete from entree");
+			
+			int resultCode = preparedStatement.executeUpdate();
+			
+			fireModelChangeEvent();
+			
+			return resultCode;
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

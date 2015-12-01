@@ -21,3 +21,12 @@ create table numero (
 insert into entree (nom, prenom) values ("FLAMEN", "Julien");
 insert into entree (nom, prenom) values ("GOUBEL", "Floriane");
 insert into entree (nom, prenom) values ("BRISSE", "Teo");
+
+insert into numero values('Pro', '0654632390', 9);
+insert into numero values('Perso', '0654616390', 9);
+
+insert into numero values('QlickNumber', '0637632390', 10);
+insert into numero values('Perso', '0653632399', 10);
+
+insert into numero values('Pro', '0624642390', 11);
+insert into numero values('Perso', '0664632590', 11);

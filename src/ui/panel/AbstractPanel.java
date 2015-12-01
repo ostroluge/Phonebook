@@ -1,24 +1,18 @@
-package ui;
+package ui.panel;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 
-import domaine.Entree;
-
+@SuppressWarnings("serial")
 public abstract class AbstractPanel extends JPanel implements ActionListener {
 
 	protected JLabel firstLabel;
