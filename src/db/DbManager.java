@@ -24,7 +24,7 @@ public class DbManager {
 		
 		try {
 			Connection conn = DriverManager.getConnection(
-				"jdbc:mysql://172.18.15.22:3306/ostrowski?user=ostrowski&password=zohpae4f");
+				"jdbc:mysql://172.18.15.22:3306/ostrowski?user=ostrowski&password=dbpassword");
 			
 			if (conn != null) {
 				return conn;
