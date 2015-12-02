@@ -1,6 +1,7 @@
 package ui.listPanel;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -11,28 +12,34 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import ui.listener.DataManager;
 import ui.listener.EntreeSelectedListener;
+import ui.listener.NumeroChangeListener;
+import ui.listener.NumeroSelectedListener;
+import domaine.Entree;
 import domaine.Numero;
 import fabrique.FabNumero;
 
 @SuppressWarnings("serial")
-public class NumeroListPanel extends JPanel implements EntreeSelectedListener {
+public class NumeroListPanel extends JPanel implements EntreeSelectedListener, NumeroChangeListener {
 
+	protected Entree entree;
+	
+	private static List<NumeroSelectedListener> listeners = new ArrayList<>();
+	
 	protected JList<Numero> mJList;
 	protected JScrollPane listScroller;
 	
 	protected DefaultListModel<Numero> listModel = new DefaultListModel<>();
 	
 	public NumeroListPanel() {
-		EntreeListPanel entree = new EntreeListPanel();
-		entree.addListener(this);
+		FabNumero.getInstance().addListener(this);
+		new EntreeListPanel().addListener(this);
+		
 		setJList();
 		add(listScroller);
 	}
 	
 	protected void setJList() {
-		List<Numero> numeros;
 		
 		mJList = new JList<Numero>(listModel);
 		mJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -51,6 +58,7 @@ public class NumeroListPanel extends JPanel implements EntreeSelectedListener {
 					if (mJList.getValueIsAdjusting()) {
 						if (mJList.getSelectedValue() instanceof Numero) {
 							Numero result = (Numero) mJList.getSelectedValue();
+							fireNumeroSelectedEvent(result);
 							System.out.println(result.getCode() + " number selected");
 						}
 					}
@@ -60,15 +68,37 @@ public class NumeroListPanel extends JPanel implements EntreeSelectedListener {
 	}
 
 	@Override
-	public void onEntreeSelection() {
-		if (DataManager.getInstance().getEntreeSelected().getId() != 0) {
-			int idEntree = DataManager.getInstance().getEntreeSelected().getId();
+	public void onEntreeSelection(Entree entreeSelected) {
+		if (entreeSelected.getId() != 0) {
+			this.entree = entreeSelected;
 			listModel.clear();
-			List<Numero> numeros = FabNumero.getInstance().getNumerosByIdEntree(idEntree);
+			List<Numero> numeros = FabNumero.getInstance().getNumerosByIdEntree(entree.getId());
 			for (int i=0; i<numeros.size(); i++) {
 				listModel.add(i, numeros.get(i));
 			}
 			mJList.setModel(listModel);
+		}
+	}
+
+	@Override
+	public void numeroHasChanged() {
+		if (entree != null) {
+			listModel.clear();
+			List<Numero> numeros = FabNumero.getInstance().getNumerosByIdEntree(entree.getId());
+			for (int i=0; i<numeros.size(); i++) {
+				listModel.add(i, numeros.get(i));
+			}
+			mJList.setModel(listModel);
+		}
+	}
+
+	public void addListener(NumeroSelectedListener listener) {
+		listeners.add(listener);
+	}
+	
+	private static void fireNumeroSelectedEvent(Numero numeroSelected) {
+		for (NumeroSelectedListener listener : listeners) {
+			listener.onNumeroSelection(numeroSelected);
 		}
 	}
 }

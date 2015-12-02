@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ui.listener.NumeroChangeListener;
 import db.DbManager;
 import domaine.Entree;
 import domaine.Numero;
@@ -14,38 +15,15 @@ import domaine.Numero;
 public class FabNumero {
 
 	private static FabNumero INSTANCE;
-	private List<Numero> numeros = new ArrayList<>();
 	private Connection conn = DbManager.getInstance().getConnection();
+	
+	private static List<NumeroChangeListener> listeners = new ArrayList<>();
 	
 	public static FabNumero getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new FabNumero();
 		}
 		return INSTANCE;
-	}
-	
-	public List<Numero> getAllNumeros() {
-		try {
-			PreparedStatement preparedStatement = conn.prepareStatement(
-					"select * from numero");
-			preparedStatement.clearParameters();
-			
-			ResultSet result = preparedStatement.executeQuery();
-			
-			while (result.next()) {
-				String label = result.getString(1);
-				String valeur = result.getString(2);
-				int idEntree = result.getInt(3);
-				numeros.add(new Numero(label, valeur, idEntree));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		if (numeros != null) {
-			return numeros;
-		}
-		return null;
 	}
 	
 	public List<Numero> getNumerosByIdEntree(int idEntree) {
@@ -75,7 +53,7 @@ public class FabNumero {
 		return null;
 	}
 	
-	public void addNumero(String label, String valeur, Entree entree) {
+	public int addNumero(String label, String valeur, Entree entree) {
 		try {
 			PreparedStatement preparedStatement = conn.prepareStatement(
 					"insert into numero values (?, ?, ?)");
@@ -85,13 +63,18 @@ public class FabNumero {
 			preparedStatement.setString(2, valeur);
 			preparedStatement.setInt(3, entree.getId());
 			
-			preparedStatement.executeUpdate();
+			int resultCode = preparedStatement.executeUpdate();
+			
+			fireModelChangeEvent();
+			
+			return resultCode;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return 0;
 	}
 
-	public void deleteNumero(String valeur) {
+	public int deleteNumero(String valeur) {
 		try {
 			PreparedStatement preparedStatement = conn.prepareStatement(
 					"delete from numero where value = ?");
@@ -99,9 +82,43 @@ public class FabNumero {
 			
 			preparedStatement.setString(1, valeur);
 			
-			preparedStatement.executeUpdate();
+			int resultCode = preparedStatement.executeUpdate();
+			
+			fireModelChangeEvent();
+			
+			return resultCode;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public int deleteAllNumerosEntree(Entree entree) {
+		try {
+			PreparedStatement preparedStatement = conn.prepareStatement(
+					"delete from numero where id_entree = ?");
+			preparedStatement.clearParameters();
+			
+			preparedStatement.setInt(1, entree.getId());
+			
+			int resultCode = preparedStatement.executeUpdate();
+			
+			fireModelChangeEvent();
+			
+			return resultCode;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public void addListener(NumeroChangeListener listener) {
+		listeners.add(listener);
+	}
+	
+	private static void fireModelChangeEvent() {
+		for (NumeroChangeListener listener : listeners) {
+			listener.numeroHasChanged();
 		}
 	}
 }

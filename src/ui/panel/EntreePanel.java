@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 
 import ui.listPanel.EntreeListPanel;
-import ui.listener.DataManager;
 import ui.listener.EntreeSelectedListener;
 import domaine.Entree;
 import fabrique.FabEntree;
@@ -13,14 +12,10 @@ import fabrique.FabEntree;
 @SuppressWarnings("serial")
 public class EntreePanel extends AbstractPanel implements EntreeSelectedListener {
 
+	protected Entree entree;
+	
 	public EntreePanel() {
-		EntreeListPanel entree = new EntreeListPanel();
-		entree.addListener(this);
-		setFirstLabel();
-		setSecondLabel();
-		
-		add(firstLabel, getFirstLabelConstraints());
-		add(secondLabel, getSecondLabelConstraints());
+		new EntreeListPanel().addListener(this);
 	}
 	
 	@Override
@@ -44,10 +39,9 @@ public class EntreePanel extends AbstractPanel implements EntreeSelectedListener
 			}
 		} else if (e.getSource() == deleteButton) {
 			System.out.println("Suppression d'une entree");
-			if (DataManager.getInstance().getEntreeSelected() != null) {
-				Entree entreeToDelete = DataManager.getInstance().getEntreeSelected();
+			if (entree != null) {
 				int result = FabEntree.getInstance().deleteEntree(
-						entreeToDelete.getNom());
+						entree.getNom());
 				if (result == 1) {
 					System.out.println("Suppression effectuee");
 				} else {
@@ -80,11 +74,11 @@ public class EntreePanel extends AbstractPanel implements EntreeSelectedListener
 	}
 
 	@Override
-	public void onEntreeSelection() {
-		if (DataManager.getInstance().getEntreeSelected() != null) {
-			Entree entreeSelected = DataManager.getInstance().getEntreeSelected();
-			firstTextField.setText(entreeSelected.getNom());
-			secondTextField.setText(entreeSelected.getPrenom());
+	public void onEntreeSelection(Entree entreeSelected) {
+		if (entreeSelected != null) {
+			this.entree = entreeSelected;
+			firstTextField.setText(entree.getNom());
+			secondTextField.setText(entree.getPrenom());
 		}
 	}
 }

@@ -16,6 +16,7 @@ public class FabEntree {
 	private static FabEntree INSTANCE;
 	private List<Entree> entrees = new ArrayList<>();
 	private Connection conn = DbManager.getInstance().getConnection();
+	
 	private static List<EntreeChangeListener> listeners = new ArrayList<>();
 	
 	public static FabEntree getInstance() {
@@ -25,16 +26,6 @@ public class FabEntree {
 		return INSTANCE;
 	}
 
-	public void addListener(EntreeChangeListener listener) {
-		listeners.add(listener);
-	}
-	
-	private static void fireModelChangeEvent() {
-		for (EntreeChangeListener listener : listeners) {
-			listener.entreeHasChanged();
-		}
-	}
-	
 	public List<Entree> getAllEntrees() {
 		this.entrees.clear();
 		PreparedStatement preparedStatement;
@@ -58,35 +49,6 @@ public class FabEntree {
 
 		if (this.entrees != null) {
 			return this.entrees;
-		}
-		return null;
-	}
-	
-	public Entree getEntreeByName(String nom) {
-		Entree entree = null;
-		PreparedStatement preparedStatement;
-		try {
-			preparedStatement = conn.prepareStatement(
-					"select * from entree where nom = ?");
-			preparedStatement.clearParameters();
-			
-			preparedStatement.setString(1, nom);
-			
-			ResultSet result = preparedStatement.executeQuery();
-			
-			while (result.next()) {
-				int id = result.getInt(1);
-				String nomEntree = result.getString(2);
-				String prenomEntree = result.getString(3);
-				entree = new Entree(id, nomEntree, prenomEntree);
-			}
-			
-			if (entree != null) {
-				return entree;
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 		return null;
 	}
@@ -148,5 +110,15 @@ public class FabEntree {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	public void addListener(EntreeChangeListener listener) {
+		listeners.add(listener);
+	}
+	
+	private static void fireModelChangeEvent() {
+		for (EntreeChangeListener listener : listeners) {
+			listener.entreeHasChanged();
+		}
 	}
 }

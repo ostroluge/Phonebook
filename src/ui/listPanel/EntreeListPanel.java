@@ -12,7 +12,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import ui.listener.DataManager;
 import ui.listener.EntreeChangeListener;
 import ui.listener.EntreeSelectedListener;
 import domaine.Entree;
@@ -31,6 +30,7 @@ public class EntreeListPanel extends JPanel implements EntreeChangeListener {
 	
 	public EntreeListPanel() {
 		FabEntree.getInstance().addListener(this);
+		
 		setJList();
 		add(listScroller);
 	}
@@ -55,8 +55,7 @@ public class EntreeListPanel extends JPanel implements EntreeChangeListener {
 				if (mJList.getSelectedValue() instanceof Entree) {
 					if (mJList.getValueIsAdjusting()) {
 						entreeSelected = (Entree) mJList.getSelectedValue();
-						DataManager.getInstance().setEntreeSelected(entreeSelected);
-						fireEntreeSelectedEvent();
+						fireEntreeSelectedEvent(entreeSelected);
 						System.out.println(entreeSelected.getNom() + " selected");
 					}
 				}
@@ -82,9 +81,9 @@ public class EntreeListPanel extends JPanel implements EntreeChangeListener {
 		listeners.add(listener);
 	}
 	
-	private static void fireEntreeSelectedEvent() {
+	private static void fireEntreeSelectedEvent(Entree entreeSelected) {
 		for (EntreeSelectedListener listener : listeners) {
-			listener.onEntreeSelection();
+			listener.onEntreeSelection(entreeSelected);
 		}
 	}
 }

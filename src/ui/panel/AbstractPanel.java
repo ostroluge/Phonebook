@@ -37,6 +37,12 @@ public abstract class AbstractPanel extends JPanel implements ActionListener {
 		add(addButton, getAddButtonConstraints());
 		add(deleteButton, getDeleteButtonConstraints());
 		add(clearButton, getClearButtonConstraints());
+		
+		setFirstLabel();
+		setSecondLabel();
+		
+		add(firstLabel, getFirstLabelConstraints());
+		add(secondLabel, getSecondLabelConstraints());
 	}
 	
 	protected void setJButtons() {
