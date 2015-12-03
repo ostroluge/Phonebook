@@ -2,7 +2,10 @@ package ui.panel;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import ui.listPanel.EntreeListPanel;
 import ui.listPanel.NumeroListPanel;
@@ -25,9 +28,8 @@ public class NumeroPanel extends AbstractPanel implements NumeroSelectedListener
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Un event s'est produit");
+		JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		if (e.getSource() == addButton) {
-			System.out.println("Ajout d'un numero");
 			if (!firstTextField.getText().trim().equals("") 
 					&& !secondTextField.getText().trim().equals("")) {
 				if (entree != null) {
@@ -37,39 +39,37 @@ public class NumeroPanel extends AbstractPanel implements NumeroSelectedListener
 									secondTextField.getText().trim(),
 									entree);
 					if (result == 1) {
-						System.out.println("Ajout effectue avec succes");
+						JOptionPane.showMessageDialog(topFrame, "Ajout effectue avec succes");
 					} else {
-						System.out.println("Echec de l'ajout, veuillez reessayer");
+						JOptionPane.showMessageDialog(topFrame, "Echec de l'ajout, veuillez reessayer");
 					}
 				} else {
-					System.out.println("Veuillez d'abord selectionner une entree");
+					JOptionPane.showMessageDialog(topFrame, "Veuillez d'abord selectionner une entree");
 				}
 			}
 		} else if (e.getSource() == deleteButton) {
-			System.out.println("Suppression d'un numero");
 			if (entree != null && numero != null) {
 				int result =
 						FabNumero.getInstance().deleteNumero(numero.getValeur());
 				if (result == 1) {
-					System.out.println("Suppression effectuee");
+					JOptionPane.showMessageDialog(topFrame, "Suppression effectuee");
 				} else {
-					System.out.println("Echec de la suppression, veuillez reessayer");
+					JOptionPane.showMessageDialog(topFrame, "Echec de la suppression, veuillez reessayer");
 				}
 			} else {
-				System.out.println("Veuillez selectionner un numero a supprimer");
+				JOptionPane.showMessageDialog(topFrame, "Veuillez selectionner un numero a supprimer");
 			}
 		} else if (e.getSource() == clearButton) {
-			System.out.println("Clear l'ensemble des numeros d'une entree");
 			if (entree != null) {
 				int result =
 						FabNumero.getInstance().deleteAllNumerosEntree(entree);
 				if (result != 0) {
-					System.out.println("Clear effectue");
+					JOptionPane.showMessageDialog(topFrame, "Clear effectue");
 				} else {
-					System.out.println("Echec du clear, veuillez reessayer");
+					JOptionPane.showMessageDialog(topFrame, "Echec du clear, veuillez reessayer");
 				}
 			} else {
-				System.out.println("Veuillez d'abord selectionner une entree");
+				JOptionPane.showMessageDialog(topFrame, "Veuillez d'abord selectionner une entree");
 			}
 		}
 	}

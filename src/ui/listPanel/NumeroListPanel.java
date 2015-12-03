@@ -59,7 +59,6 @@ public class NumeroListPanel extends JPanel implements EntreeSelectedListener, N
 						if (mJList.getSelectedValue() instanceof Numero) {
 							Numero result = (Numero) mJList.getSelectedValue();
 							fireNumeroSelectedEvent(result);
-							System.out.println(result.getCode() + " number selected");
 						}
 					}
 				}

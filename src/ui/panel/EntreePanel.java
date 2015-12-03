@@ -2,7 +2,10 @@ package ui.panel;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import ui.listPanel.EntreeListPanel;
 import ui.listener.EntreeSelectedListener;
@@ -20,9 +23,8 @@ public class EntreePanel extends AbstractPanel implements EntreeSelectedListener
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Un event s'est produit");
+		JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		if (e.getSource() == addButton) {
-			System.out.println("Ajout d'une entree");
 			if (!firstTextField.getText().trim().equals("") 
 					&& !secondTextField.getText().trim().equals("")) {
 				int result = 
@@ -30,33 +32,31 @@ public class EntreePanel extends AbstractPanel implements EntreeSelectedListener
 								firstTextField.getText().trim(),
 								secondTextField.getText().trim());
 				if (result == 1) {
-					System.out.println("Ajout effectue avec succes");
+					JOptionPane.showMessageDialog(topFrame, "Ajout effectue avec succes");
 				} else {
-					System.out.println("Echec de l'ajout, veuillez reessayer");
+					JOptionPane.showMessageDialog(topFrame, "Echec de l'ajout, veuillez reessayer");
 				}
 			} else {
-				System.out.println("Veuillez renseigner tous les champs");
+				JOptionPane.showMessageDialog(topFrame, "Veuillez renseigner tous les champs");
 			}
 		} else if (e.getSource() == deleteButton) {
-			System.out.println("Suppression d'une entree");
 			if (entree != null) {
 				int result = FabEntree.getInstance().deleteEntree(
 						entree.getNom());
 				if (result == 1) {
-					System.out.println("Suppression effectuee");
+					JOptionPane.showMessageDialog(topFrame, "Suppression effectuee");
 				} else {
-					System.out.println("Echec de la suppression, veuillez reessayer");
+					JOptionPane.showMessageDialog(topFrame, "Echec de la suppression, veuillez reessayer");
 				}
 			} else {
-				System.out.println("Veuillez selectionner une entree a supprimer");
+				JOptionPane.showMessageDialog(topFrame, "Veuillez selectionner une entree a supprimer");
 			}
 		} else if (e.getSource() == clearButton) {
-			System.out.println("Clear de l'ensemble des entrees");
 			int result = FabEntree.getInstance().deleteAllEntrees();
 			if (result != 0) {
-				System.out.println("Clear effectue");
+				JOptionPane.showMessageDialog(topFrame, "Clear effectue");
 			} else {
-				System.out.println("Echec du clear, veuillez reessayer");
+				JOptionPane.showMessageDialog(topFrame, "Echec du clear, veuillez reessayer");
 			}
 		}
 	}

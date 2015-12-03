@@ -56,7 +56,6 @@ public class EntreeListPanel extends JPanel implements EntreeChangeListener {
 					if (mJList.getValueIsAdjusting()) {
 						entreeSelected = (Entree) mJList.getSelectedValue();
 						fireEntreeSelectedEvent(entreeSelected);
-						System.out.println(entreeSelected.getNom() + " selected");
 					}
 				}
 			}
